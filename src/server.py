@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .logging import get_logger
 from .logging_middleware import logging_context, log_request_response
+from .sentry_middleware import sentry_middleware
 
 logger = get_logger(__name__)
 
@@ -14,7 +15,7 @@ sentry_sdk.init(
     traces_sample_rate=1.0,
 )
 
-app = FastAPI(middleware=[logging_context, log_request_response])
+app = FastAPI(middleware=[logging_context, log_request_response, sentry_middleware])
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],

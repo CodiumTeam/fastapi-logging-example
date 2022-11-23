@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import * as Sentry from "@sentry/vue";
 import {ref} from 'vue';
 
 defineProps<{ msg: string }>()
@@ -8,31 +8,53 @@ function randomId() {
   return Math.floor(Math.random() * 100) + '-' + Date.now()
 }
 
+function randomUser() {
+  const choices = [
+      "Alice", "Bob", "Chris", "Dilan", "Edgar", "Frank",
+  ];
+  var index = Math.floor(Math.random() * choices.length);
+  return choices[index];
+}
+
 const sessionId = ref(randomId());
+const userName = ref(randomUser());
+
+Sentry.setUser({
+  name: userName.value,
+  email: `${userName.value.toLowerCase()}@example.com`
+});
+
+Sentry.configureScope(scope => {
+    scope.setTag("session_id", sessionId.value);
+});
+
+async function fetchWrapper(url: string) {
+  const uniqueRequestId = randomId();
+
+  Sentry.configureScope(scope => {
+      scope.setTag("transaction_id", uniqueRequestId);
+  });
+
+  return fetch(url, {
+    headers: {
+      'User-ID': userName.value,
+      'Session-ID': sessionId.value,
+      'X-Correlation-ID': uniqueRequestId,
+    },
+  });
+}
 
 function request() {
-  fetch("http://127.0.0.1:8000", {
-    headers: {
-      'User-ID': 'john',
-      'Session-ID': sessionId.value,
-      'X-Correlation-ID': randomId(),
-    }
-  }).then(
-      response => response.json()
+  fetchWrapper("http://127.0.0.1:8000").then(
+    response => response.json()
   ).then(json => {
     alert(json.message)
   })
 }
 
 function generateError() {
-  fetch("http://127.0.0.1:8000/error", {
-    headers: {
-      'User-ID': 'john',
-      'Session-ID': sessionId.value,
-      'X-Correlation-ID': randomId(),
-    }
-  }).then(
-      response => response.json()
+  fetchWrapper("http://127.0.0.1:8000/error").then(
+    response => response.json()
   ).then(json => {
     alert(json.message)
   })
