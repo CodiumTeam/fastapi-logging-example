@@ -35,3 +35,14 @@ async def root():
 async def trigger_error():
     division_by_zero = 1 / 0
     return {"message": "We divided something"}
+
+
+@app.exception_handler(500)
+async def specific_exception_handler(request, exc):
+    """
+    Workaround to get CORS headers even when an internal error happens
+    """
+    return Response("Internal Server Error 2", status_code=500, headers={
+        'access-control-allow-origin': '*',
+        'access-control-allow-credentials': 'true',
+    })

@@ -12,7 +12,7 @@ Sentry.init({
   dsn: import.meta.env.VITE_PUBLIC_SENTRY_DSN,
   integrations: [
     new BrowserTracing({
-      tracePropagationTargets: ["my-site-url.com", /^\//],
+      tracePropagationTargets: ["localhost", "127.0.0.1", "my-site-url.com", /^\//],
     }),
   ],
   tracesSampleRate: 1.0,
