@@ -1,0 +1,15 @@
+services:
+  api:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    command: ["uvicorn", "src.server:app", "--no-access-log", "--reload", "--host=0.0.0.0"]
+
+  www:
+    build: www
+    env_file:
+      - .env
+    ports:
+      - 4173:4173

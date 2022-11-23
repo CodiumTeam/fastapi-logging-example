@@ -3,8 +3,7 @@
 Install dependencies and run the server:
 
 ```bash
-pipenv install
-pipenv run uvicorn src.server:app --reload --no-access-log
+docker compose up --build
 ```
 
 Perform some requests and see the server logs
