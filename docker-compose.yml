@@ -5,6 +5,8 @@ services:
       - .env
     ports:
       - 8000:8000
+    volumes:
+      - ./:/app
     command: ["uvicorn", "src.server:app", "--no-access-log", "--reload", "--host=0.0.0.0"]
 
   www:
@@ -12,4 +14,7 @@ services:
     env_file:
       - .env
     ports:
-      - 4173:4173
+      - 5173:5173
+    volumes:
+      - ./www:/app
+    command: ["npm", "run", "dev", "--", "--host=0.0.0.0"]

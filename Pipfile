@@ -10,3 +10,4 @@ ipython = "*"
 fastapi = "*"
 starlette-context = "*"
 uvicorn = {version = "*", extras=["standard"]}
+sentry-sdk = {version = "*", extras=["fastapi"]}

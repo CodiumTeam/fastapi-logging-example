@@ -24,6 +24,20 @@ function request() {
   })
 }
 
+function generateError() {
+  fetch("http://127.0.0.1:8000/error", {
+    headers: {
+      'User-ID': 'john',
+      'Session-ID': sessionId.value,
+      'X-Correlation-ID': randomId(),
+    }
+  }).then(
+      response => response.json()
+  ).then(json => {
+    alert(json.message)
+  })
+}
+
 </script>
 
 <template>
@@ -31,6 +45,9 @@ function request() {
 
   <div class="card">
     <button type="button" @click="request">Request to server</button>
+  </div>
+  <div class="card">
+    <button type="button" @click="generateError">Error</button>
   </div>
 </template>
 
