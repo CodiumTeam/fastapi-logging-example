@@ -32,20 +32,20 @@ async function fetchWrapper(url: string) {
   const uniqueRequestId = randomId();
 
   Sentry.configureScope(scope => {
-      scope.setTag("transaction_id", uniqueRequestId);
+      scope.setTag("correlation_id", uniqueRequestId);
   });
 
   return fetch(url, {
     headers: {
-      'User-ID': userName.value,
-      'Session-ID': sessionId.value,
+      'X-User-ID': userName.value,
+      'X-Session-ID': sessionId.value,
       'X-Correlation-ID': uniqueRequestId,
     },
   });
 }
 
 function request() {
-  fetchWrapper("http://127.0.0.1:8000").then(
+  fetchWrapper("http://localhost:8000").then(
     response => response.json()
   ).then(json => {
     alert(json.message)
@@ -53,7 +53,7 @@ function request() {
 }
 
 function generateError() {
-  fetchWrapper("http://127.0.0.1:8000/error").then(
+  fetchWrapper("http://localhost:8000/error").then(
     response => response.json()
   ).then(json => {
     alert(json.message)

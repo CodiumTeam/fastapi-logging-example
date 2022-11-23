@@ -9,10 +9,10 @@ class FastApiLoggingFilter(logging.Filter):
         return True
 
     def _get_session_id(self):
-        return context.get("Session-Id")
+        return context.get("X-Session-ID")
 
     def _get_user_id(self):
-        return context.get("User-Id")
+        return context.get("X-User-ID")
 
     def _get_trace_id(self):
         return context.get("X-Correlation-ID")

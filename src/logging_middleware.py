@@ -10,11 +10,11 @@ logger = get_logger(__name__)
 
 
 class UserIdPlugin(Plugin):
-    key = "User-Id"
+    key = "X-User-ID"
 
 
 class SessionIdPlugin(Plugin):
-    key = "Session-Id"
+    key = "X-Session-ID"
 
 
 class CorrelationIdPlugin(Plugin):
